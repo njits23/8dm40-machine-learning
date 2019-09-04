@@ -1,5 +1,5 @@
 import numpy as np
-def leastSquares(X,y):
+def lsq(X,y):
     #calculates vector w from input matrix X and output values y
     
     #add a column of ones
