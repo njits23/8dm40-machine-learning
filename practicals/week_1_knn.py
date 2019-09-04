@@ -19,7 +19,7 @@ def euclidean_distance(vector1, vector2):
     Returns:
         [type] -- [description]
     """
-    return np.sqrt(np.sum(np.power(vector1-vector2, 2)))
+    return np.sqrt(np.sum(np.power(vector1-vector2, 2),axis=1))
 
 def get_neighbours(X_train, X_test, k):
     """[summary]
@@ -30,5 +30,10 @@ def get_neighbours(X_train, X_test, k):
         k {[type]} -- [description]
     """
     distances = []
+    for i in range(len(X_test[:,0,0])):
+        distance = euclidean_distance(X_test[i,:,:],X_train)
+        distances.append(distance)
+    
     neighbours = []
+    return distances
     
