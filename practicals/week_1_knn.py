@@ -13,6 +13,9 @@ y_test = breast_cancer.target[300:, np.newaxis]
 def euclidean_distance(vector1, vector2):
     return np.linalg.norm(vector1-vector2)
 
+def normalize(matrix):
+    return matrix / matrix.max(axis=0)
+
 def get_neighbours(X_train, y_train, testInstance, k):
     """[Function that calculates the euclidean distance from testInstance to 
     every point in X_train. The k closest neighbours are then returned,
@@ -73,6 +76,9 @@ def perform_knn(X_train, y_train, X_test, k):
     Returns:
         [matrix] -- [X_test with the predicted labels]
     """
+    X_train = normalize(X_train)
+    X_test = normalize(X_test)
+
     testData = np.concatenate((X_test, np.zeros((len(X_test),1))), axis=1)  #initialize testData with empty labels, to replace later with predicted labels. 
 
     for i in range(len(X_test)):
@@ -82,4 +88,10 @@ def perform_knn(X_train, y_train, X_test, k):
 
     return testData
 
+def get_accuracy(testData, y_test):
+    prediction = testData[:,-1]
+    correct = np.count_nonzero(prediction==y_test[:,0])
+    return correct    
 
+def plot_error(testData, y_test, k):
+    #TODO    
