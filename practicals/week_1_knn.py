@@ -74,21 +74,18 @@ def perform_knn(X_train, y_train, X_test, k, regression):
         [matrix] -- [X_test with the predicted labels or predicted values 
         dependent on classification or regression]
     """
-    if regression!=True:
-        X_train = normalize(X_train)
-        X_test = normalize(X_test)
-    elif regression:
-        prediction=np.zeros((np.shape(X_test)[0],np.shape(X_test)[1]))
+    
+    X_train = normalize(X_train)
+    X_test = normalize(X_test)
+    if regression:
+        prediction=np.zeros((np.shape(X_test)[0]))
 
     testData = np.concatenate((X_test, np.zeros((len(X_test),1))), axis=1)  #initialize testData with empty labels, to replace later with predicted labels. 
 
     for i in range(len(X_test)):
         neighbours = get_neighbours(X_train, y_train, X_test[i], k)
-        if regression:
-            predict=np.zeros((np.shape(X_train)[1]))
-            for neig in neighbours:
-                predict += neig[:np.shape(X_train)[1]]
-            prediction[i,:]=predict/k
+        if regression:        
+            prediction[i]=np.mean(neighbours[0:k])
         else:
             predicted_label = get_response(neighbours)
             testData[i][-1] = predicted_label    
@@ -112,13 +109,13 @@ def regression_plot():
     X_train = diabetes.data[:300, :]
     y_train = diabetes.target[:300, np.newaxis]
     X_test = diabetes.data[300:, :]
-    
+    y_true = diabetes.target[300:, np.newaxis]
 
     a=25
     errors=np.zeros(a)
     for idx, k in enumerate(range(1,2*a,2)):
         prediction=perform_knn(X_train, y_train, X_test, k, True)
-        errors[idx]=mse(X_test,prediction)
+        errors[idx]=mse(y_true,prediction)
     plt.plot(range(1,2*a,2),errors)
     plt.xlabel('k (Number of considered neighbours)')
     plt.ylabel('Mean Squared Error (-)')
