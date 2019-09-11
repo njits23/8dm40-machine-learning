@@ -103,21 +103,10 @@ def regression_plot():
     plt.title('MSE for k Nearest Neighbour regression')
     plt.show()
     
+    print('Minimum MSE: ' + str(np.min(errors)))
     return
 
 def get_accuracy(testData, y_test):
     prediction = testData[:,-1]
     correct = np.count_nonzero(prediction==y_test[:,0])
     return correct    
-
-def plot_error(testData, y_test, k):
-    breast_cancer = load_breast_cancer()
-
-    X_train = breast_cancer.data[:300, :]
-    y_train = breast_cancer.target[:300, np.newaxis]
-    X_test = breast_cancer.data[300:, :]
-    y_test = breast_cancer.target[300:, np.newaxis] 
-    return
-
-
-
