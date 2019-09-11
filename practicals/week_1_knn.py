@@ -64,8 +64,17 @@ def perform_knn(X_train, y_train, X_test, k, regression=False):
 
     return y_predict
 
-def plot_knn_performance(X_train, y_train, X_test, y_test, k):
-    predict_y = 
+def plot_knn_performance(X_train, y_train, X_test, y_test, maxK=30):
+    a = int(maxK/2)
+    trues = np.zeros(a)
+    for i, k in enumerate(range(1,maxK,2)):
+        y_predict = perform_knn(X_train, y_train, X_test, k, False)
+        trues[i]=np.sum(np.mean(y_predict==y_test)) 
+    plt.plot(range(1,maxK,2),trues)
+    plt.xlabel('k')
+    plt.ylabel('accuracy')
+    plt.title('Accuray for KNN')
+    plt.show()
 
 def mse(truth,predict):
     '''Calculate the mean squared errors when cosidering multiple dimensions'''
@@ -76,7 +85,7 @@ def regression_plot():
     different k values'''
     
     #download the necessary data
-    diabetes = load_diabetes()
+    diabetes = load_breast_cancer()
 
     X_train = diabetes.data[:300, :]
     y_train = diabetes.target[:300, np.newaxis]
