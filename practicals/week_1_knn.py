@@ -52,26 +52,20 @@ def perform_knn(X_train, y_train, X_test, k, regression=False):
     
     X_train = normalize(X_train)
     X_test = normalize(X_test)
-    if regression:
-        prediction=np.zeros((np.shape(X_test)[0]))
-
-    prediction=np.zeros((np.shape(X_test)[0],np.shape(X_test)[1]))
+    y_predict=np.zeros((np.shape(X_test)[0],1))
 
     for i in range(len(X_test)):
         neighbours = get_neighbours(X_train, y_train, X_test[i], k)
         if regression:        
-            prediction[i]=np.mean(neighbours[0:k])
+            y_predict[i]=np.mean(neighbours)
         else:
-            y_predicted = np.round(np.mean(neighbours))  
+            y_predict[i] = np.round(np.mean(neighbours))  
                                #replace the zerolabel in testData with the predicted label
-    if regression:
-        return prediction
-    else:
-        return testData
 
-def plot_knn_performance(X_train, y_train, X_test, k):
-    testData = perform_knn(X_train, y_train, X_test, k)
-    predict
+    return y_predict
+
+def plot_knn_performance(X_train, y_train, X_test, y_test, k):
+    predict_y = 
 
 def mse(truth,predict):
     '''Calculate the mean squared errors when cosidering multiple dimensions'''
