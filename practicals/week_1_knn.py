@@ -26,17 +26,13 @@ def get_neighbours(X_train, y_train, testInstance, k):
         [list] -- of length k. Contains the distances of the closest k 
         neighbours of TestInstance.
     """
-    trainData = np.concatenate((X_train, y_train), axis=1)          #creates combined matrix of data and label
 
-    
     distances = []
-    for i in range(len(trainData)):                                 #calculate distance from testInstance to every trainDatapoint
-        dist = euclidean_distance(testInstance, trainData[i][:np.shape(X_train)[1]])
-        distances.append((trainData[i,:], dist))
+    for i in range(len(X_train)):                                 #calculate distance from testInstance to every trainDatapoint
+        dist = euclidean_distance(testInstance, X_train[i,:])
+        distances.append((y_train[i], dist))
     distances.sort(key=operator.itemgetter(1))
-    neighbours = []
-    for x in range(k):                                              #get the k-nearest
-        neighbours.append(distances[x][0])
+    neighbours = [dist[0] for dist in distances[0:k]]             #get the k-nearest
     return neighbours
 
 def get_response(neighbours):
@@ -60,7 +56,7 @@ def get_response(neighbours):
     return sortedVotes[0][0]
 
 
-def perform_knn(X_train, y_train, X_test, k, regression):
+def perform_knn(X_train, y_train, X_test, k, regression=False):
     """Creates testData, which is a matrix of X_test, with the predicted labels based
     on k nearest neighbours. 
     
@@ -97,6 +93,10 @@ def perform_knn(X_train, y_train, X_test, k, regression):
         return prediction
     else:
         return testData
+
+def plot_knn_performance(X_train, y_train, X_test, k):
+    testData = perform_knn(X_train, y_train, X_test, k)
+    predict
 
 def mse(truth,predict):
     '''Calculate the mean squared errors when cosidering multiple dimensions'''
@@ -140,5 +140,6 @@ def plot_error(testData, y_test, k):
     X_test = breast_cancer.data[300:, :]
     y_test = breast_cancer.target[300:, np.newaxis] 
     return
+
 
 
