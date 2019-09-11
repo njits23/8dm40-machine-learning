@@ -21,10 +21,8 @@ def get_neighbours(X_train, y_train, testInstance, k):
         k {[integer]} -- [number of neighbours to take into account]
     
     Returns:
-        [list] -- [of length(k). Contains the data for the k closest 
+        [array] -- [of length(k). Contains the labels for the k closest 
         neighbours of testInstance. ]
-        [list] -- of length k. Contains the distances of the closest k 
-        neighbours of TestInstance.
     """
 
     distances = []
@@ -36,8 +34,7 @@ def get_neighbours(X_train, y_train, testInstance, k):
     return neighbours
 
 def perform_knn(X_train, y_train, X_test, k, regression=False):
-    """Creates testData, which is a matrix of X_test, with the predicted labels based
-    on k nearest neighbours. 
+    """Performs KNN on train data, and returns the predicted labels
     
     Arguments:
         X_train {[matrix]} -- [contains all training data]
@@ -46,8 +43,7 @@ def perform_knn(X_train, y_train, X_test, k, regression=False):
         k {[integer]} -- [number of neighbours to take into account]
     
     Returns:
-        [matrix] -- [X_test with the predicted labels or predicted values 
-        dependent on classification or regression]
+        [array] -- [predicted labels for test data X_test]
     """
     
     X_train = normalize(X_train)
@@ -104,9 +100,4 @@ def regression_plot():
     plt.show()
     
     print('Minimum MSE: ' + str(np.min(errors)))
-    return
-
-def get_accuracy(testData, y_test):
-    prediction = testData[:,-1]
-    correct = np.count_nonzero(prediction==y_test[:,0])
-    return correct    
+    return   
