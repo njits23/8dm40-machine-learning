@@ -35,27 +35,6 @@ def get_neighbours(X_train, y_train, testInstance, k):
     neighbours = [int(dist[0]) for dist in distances[0:k]]             #get the k-nearest
     return neighbours
 
-def get_response(neighbours):
-    """[This function returns the label that is most occurent.]
-    
-    Arguments:
-        neighbours {[list]} -- [Each element contains the data with as last value the label.]
-    
-    Returns:
-        [integer / string] -- [label. Depending on the data is this a integer or string. ]
-    """
-    classvotes = {}
-    for i in range(len(neighbours)):
-        response = neighbours[i][-1]
-        if response in classvotes:
-            classvotes[response] += 1
-        else:
-            classvotes[response] = 1
-    
-    sortedVotes = sorted(classvotes.items(), key=operator.itemgetter(1), reverse=True)
-    return sortedVotes[0][0]
-
-
 def perform_knn(X_train, y_train, X_test, k, regression=False):
     """Creates testData, which is a matrix of X_test, with the predicted labels based
     on k nearest neighbours. 
@@ -86,8 +65,7 @@ def perform_knn(X_train, y_train, X_test, k, regression=False):
                 predict += neig[:np.shape(X_train)[1]]
             prediction[i,:]=predict/k
         else:
-            predicted_label = get_response(neighbours)
-            testData[i][-1] = predicted_label    
+            testData[i][-1] = np.round(np.mean(neighbours))  
                                #replace the zerolabel in testData with the predicted label
     if regression:
         return prediction
