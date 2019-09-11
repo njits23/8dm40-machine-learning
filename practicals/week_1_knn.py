@@ -35,27 +35,6 @@ def get_neighbours(X_train, y_train, testInstance, k):
     neighbours = [int(dist[0]) for dist in distances[0:k]]             #get the k-nearest
     return neighbours
 
-def get_response(neighbours):
-    """[This function returns the label that is most occurent.]
-    
-    Arguments:
-        neighbours {[list]} -- [Each element contains the data with as last value the label.]
-    
-    Returns:
-        [integer / string] -- [label. Depending on the data is this a integer or string. ]
-    """
-    classvotes = {}
-    for i in range(len(neighbours)):
-        response = neighbours[i][-1]
-        if response in classvotes:
-            classvotes[response] += 1
-        else:
-            classvotes[response] = 1
-    
-    sortedVotes = sorted(classvotes.items(), key=operator.itemgetter(1), reverse=True)
-    return sortedVotes[0][0]
-
-
 def perform_knn(X_train, y_train, X_test, k, regression=False):
     """Creates testData, which is a matrix of X_test, with the predicted labels based
     on k nearest neighbours. 
@@ -73,27 +52,19 @@ def perform_knn(X_train, y_train, X_test, k, regression=False):
     
     X_train = normalize(X_train)
     X_test = normalize(X_test)
-    if regression:
-        prediction=np.zeros((np.shape(X_test)[0]))
-
-    testData = np.concatenate((X_test, np.zeros((len(X_test),1))), axis=1)  #initialize testData with empty labels, to replace later with predicted labels. 
+    y_predict=np.zeros((np.shape(X_test)[0],1))
 
     for i in range(len(X_test)):
         neighbours = get_neighbours(X_train, y_train, X_test[i], k)
         if regression:        
-            prediction[i]=np.mean(neighbours[0:k])
+            y_predict[i]=np.mean(neighbours)
         else:
-            predicted_label = get_response(neighbours)
-            testData[i][-1] = predicted_label    
+            y_predict[i] = np.round(np.mean(neighbours))  
                                #replace the zerolabel in testData with the predicted label
-    if regression:
-        return prediction
-    else:
-        return testData
 
-def plot_knn_performance(X_train, y_train, X_test, k):
-    testData = perform_knn(X_train, y_train, X_test, k)
-    predict
+    return y_predict
+
+
 
 def mse(truth,predict):
     '''Calculate the mean squared errors when cosidering multiple dimensions'''
@@ -122,6 +93,7 @@ def regression_plot():
     plt.title('MSE for k Nearest Neighbour regression')
     plt.show()
     
+    print('Minimum MSE: ' + str(np.min(errors)))
     return
 
 def get_accuracy(testData, y_test):
