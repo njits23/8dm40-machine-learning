@@ -52,10 +52,8 @@ def perform_knn(X_train, y_train, X_test, k, regression=False):
     if regression!=True:
         X_train = normalize(X_train)
         X_test = normalize(X_test)
-    elif regression:
-        prediction=np.zeros((np.shape(X_test)[0],np.shape(X_test)[1]))
 
-    testData = np.concatenate((X_test, np.zeros((len(X_test),1))), axis=1)  #initialize testData with empty labels, to replace later with predicted labels. 
+    prediction=np.zeros((np.shape(X_test)[0],np.shape(X_test)[1]))
 
     for i in range(len(X_test)):
         neighbours = get_neighbours(X_train, y_train, X_test[i], k)
@@ -65,7 +63,7 @@ def perform_knn(X_train, y_train, X_test, k, regression=False):
                 predict += neig[:np.shape(X_train)[1]]
             prediction[i,:]=predict/k
         else:
-            testData[i][-1] = np.round(np.mean(neighbours))  
+            y_predicted = np.round(np.mean(neighbours))  
                                #replace the zerolabel in testData with the predicted label
     if regression:
         return prediction
