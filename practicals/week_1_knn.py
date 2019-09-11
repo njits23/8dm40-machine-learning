@@ -32,7 +32,7 @@ def get_neighbours(X_train, y_train, testInstance, k):
         dist = euclidean_distance(testInstance, X_train[i,:])
         distances.append((y_train[i], dist))
     distances.sort(key=operator.itemgetter(1))
-    neighbours = [dist[0] for dist in distances[0:k]]             #get the k-nearest
+    neighbours = [int(dist[0]) for dist in distances[0:k]]             #get the k-nearest
     return neighbours
 
 def get_response(neighbours):
