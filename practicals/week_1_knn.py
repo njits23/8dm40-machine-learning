@@ -64,8 +64,7 @@ def perform_knn(X_train, y_train, X_test, k, regression=False):
 
     return y_predict
 
-def plot_knn_performance(X_train, y_train, X_test, y_test, k):
-    predict_y = 
+
 
 def mse(truth,predict):
     '''Calculate the mean squared errors when cosidering multiple dimensions'''
@@ -94,6 +93,7 @@ def regression_plot():
     plt.title('MSE for k Nearest Neighbour regression')
     plt.show()
     
+    print('Minimum MSE: ' + str(np.min(errors)))
     return
 
 def get_accuracy(testData, y_test):
